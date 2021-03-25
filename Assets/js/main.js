@@ -9,7 +9,7 @@ var app = new Vue (
         },
         {
           title: "Dar da mangiare al coniglio",
-          status: "done"
+          status: "todo"
         },
         {
           title: "Buttare la spazzatura",
@@ -21,17 +21,33 @@ var app = new Vue (
         },
 
       ],
-      text: "",    },
+      text: "",
+    },
+    computed: {
+      todosComputed: function () {
+        let arrayTodo = this.todos.filter((todo) => todo.status == "todo");
+        let arrayDone = this.todos.filter((todo) => todo.status == "done")
+        return [...arrayTodo,...arrayDone];
+      }
+    },
     methods: {
       add: function () {
         if (this.text !== "") {
           let obj = {
-            title: this.text
+            title: this.text,
+            status: "todo",
           }
           this.todos.push(obj)
           this.text = ""
         }
-
+      },
+      check: function (todo) {
+        let index = this.todos.indexOf(todo)
+        this.todos[index].status = "done"
+      },
+      remove: function (todo) {
+        let index = this.todos.indexOf(todo)
+        this.todos.splice(index, 1);
       }
     }
   },
